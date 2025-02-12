@@ -1,6 +1,5 @@
 streamlit
 speechrecognition
-pyaudio
 deep-translator
 pyttsx3
 stripe
