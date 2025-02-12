@@ -1,26 +1,9 @@
 import streamlit as st
-import speech_recognition as sr
 from deep_translator import GoogleTranslator, MyMemoryTranslator
 import pyttsx3
 import base64
 import time
 import random
-
-def recognize_speech():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        recognizer.adjust_for_ambient_noise(source, duration=1)
-        st.info("🎤 Speak now...")
-        try:
-            audio = recognizer.listen(source, timeout=10, phrase_time_limit=5)
-            text = recognizer.recognize_google(audio)
-            return text
-        except sr.UnknownValueError:
-            return "Speech not recognized. Try again."
-        except sr.RequestError:
-            return "Speech recognition service unavailable."
-        except sr.WaitTimeoutError:
-            return "No speech detected. Please try again."
 
 def translate_text(text, target_lang="english"):
     try:
@@ -55,11 +38,7 @@ if dark_mode:
 
 target_language = st.selectbox("Select target language:", ["English", "French", "Spanish", "German", "Arabic", "Turkish", "Chinese", "Hindi", "Swahili"])
 
-if st.button("🎙️ Speak Somali"):
-    somali_text = recognize_speech()
-    st.text_area("Detected Somali text:", somali_text, height=100)
-else:
-    somali_text = st.text_area("✍️ Enter Somali text:")
+somali_text = st.text_area("✍️ Enter Somali text:")
 
 translation = ""
 if st.button("🔄 Translate"):
@@ -102,13 +81,11 @@ for original, translated in st.session_state.favorites:
     st.markdown("---")
 
 st.sidebar.header("ℹ️ About the App")
-st.sidebar.info("This app allows users to translate Somali text or speech into multiple languages, listen to translations, save favorite translations, and more.")
+st.sidebar.info("This app allows users to translate Somali text into multiple languages, listen to translations, save favorite translations, and more.")
 
 st.sidebar.header("🛠 Features")
-st.sidebar.markdown("- 🎙️ Speech-to-Text Recognition")
 st.sidebar.markdown("- 🔄 Real-time Translation")
 st.sidebar.markdown("- 🔊 Text-to-Speech")
 st.sidebar.markdown("- 📜 Translation History")
 st.sidebar.markdown("- ⭐ Save Favorite Translations")
 st.sidebar.markdown("- 🌙 Dark Mode Support")
-
